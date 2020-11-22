@@ -59,10 +59,11 @@ var FootnoteRef = function FootnoteRef(props) {
   }, [register, footnote]);
 
   return /*#__PURE__*/_react["default"].createElement("a", {
-    id: idRef,
-    href: "#".concat(idNote),
     className: props.className,
     style: props.style,
+    id: idRef,
+    href: "#".concat(idNote),
+    role: "doc-noteref",
     "aria-describedby": footnotesTitleId,
     "data-a11y-footnotes-ref": true
   }, props.children);

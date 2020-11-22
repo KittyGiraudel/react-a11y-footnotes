@@ -56,6 +56,7 @@ The `FootnoteRef` renders a link like this:
   id="css-counters-ref"
   href="#css-counters-note"
   aria-describedby="footnotes-label"
+  role="doc-noteref"
   >CSS counters</a
 >
 ```

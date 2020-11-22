@@ -44,6 +44,7 @@ describe('The `FootnoteRef` component', () => {
     const anchor = screen.getByTestId('foobar-ref')
     expect(anchor).toHaveAttribute('id', 'foobar-ref')
     expect(anchor).toHaveAttribute('href', '#foobar-note')
+    expect(anchor).toHaveAttribute('role', 'doc-noteref')
   })
 
   it('should provide styling capacities', () => {

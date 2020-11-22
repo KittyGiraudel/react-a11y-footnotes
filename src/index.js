@@ -30,10 +30,11 @@ export const FootnoteRef = props => {
 
   return (
     <a
-      id={idRef}
-      href={`#${idNote}`}
       className={props.className}
       style={props.style}
+      id={idRef}
+      href={`#${idNote}`}
+      role='doc-noteref'
       aria-describedby={footnotesTitleId}
       data-a11y-footnotes-ref
     >
