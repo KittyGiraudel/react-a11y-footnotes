@@ -62,7 +62,12 @@ export const Footnotes = props => {
         {footnotes.map(({ idNote, idRef, description }) => (
           <ListItem id={idNote} key={idNote} data-a11y-footnotes-list-item>
             {description}{' '}
-            <BackLink data-a11y-footnotes-back-link href={'#' + idRef} />
+            <BackLink
+              data-a11y-footnotes-back-link
+              href={'#' + idRef}
+              aria-label='Back to content'
+              role='doc-backlink'
+            />
           </ListItem>
         ))}
       </List>
@@ -75,11 +80,7 @@ Footnotes.defaultProps = {
   Title: props => <h2 {...props}>Footnotes</h2>,
   List: 'ol',
   ListItem: 'li',
-  BackLink: props => (
-    <a {...props} aria-label='Back to content' role='doc-backlink'>
-      ↩
-    </a>
-  ),
+  BackLink: props => <a {...props}>↩</a>,
 }
 
 export const FootnotesProvider = ({ children, footnotesTitleId }) => {

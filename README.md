@@ -95,15 +95,7 @@ The `Footnotes` component renders a HTML structure like this:
 
 - The `ListItem` prop can be passed to customise the list. It is `'li'` by default to render a `<li>` HTML element, and can accept any React component.
 
-- The `BackLink` prop can be passed to customise the link back to the reference with each list item. If its content is non-descriptive (e.g. an icon), it is important it has an `aria-label` attribute with accessible content! By default, it is as below:
-
-```js
-const BackLink = props => (
-  <a href={'#' + props.id} aria-label='Back to content' role='doc-backlink'>
-    ↩
-  </a>
-)
-```
+- The `BackLink` prop can be passed to customise the link back to the reference with each list item. It is `props => <a {...props}>↩</a>` by default to render a link containing `↩`, and can accepted any component.
 
 ## Styling
 

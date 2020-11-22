@@ -25,8 +25,6 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
 var FootnotesContext = /*#__PURE__*/_react["default"].createContext({});
 
 var FootnoteRef = function FootnoteRef(props) {
@@ -104,7 +102,9 @@ var Footnotes = function Footnotes(props) {
       "data-a11y-footnotes-list-item": true
     }, description, ' ', /*#__PURE__*/_react["default"].createElement(BackLink, {
       "data-a11y-footnotes-back-link": true,
-      href: '#' + idRef
+      href: '#' + idRef,
+      "aria-label": "Back to content",
+      role: "doc-backlink"
     }));
   })));
 };
@@ -118,9 +118,7 @@ Footnotes.defaultProps = {
   List: 'ol',
   ListItem: 'li',
   BackLink: function BackLink(props) {
-    return /*#__PURE__*/_react["default"].createElement("a", _extends({}, props, {
-      "aria-label": "Back to content"
-    }), "\u21A9");
+    return /*#__PURE__*/_react["default"].createElement("a", props, "\u21A9");
   }
 };
 
