@@ -61,7 +61,7 @@ export const Footnotes = props => {
       <List data-a11y-footnotes-list>
         {footnotes.map(({ idNote, idRef, description }) => (
           <ListItem id={idNote} key={idNote} data-a11y-footnotes-list-item>
-            {description}{' '}
+            {description}&nbsp;
             <BackLink
               data-a11y-footnotes-back-link
               href={'#' + idRef}

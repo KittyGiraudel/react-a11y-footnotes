@@ -101,7 +101,7 @@ var Footnotes = function Footnotes(props) {
       id: idNote,
       key: idNote,
       "data-a11y-footnotes-list-item": true
-    }, description, ' ', /*#__PURE__*/_react["default"].createElement(BackLink, {
+    }, description, "\xA0", /*#__PURE__*/_react["default"].createElement(BackLink, {
       "data-a11y-footnotes-back-link": true,
       href: '#' + idRef,
       "aria-label": "Back to content",
