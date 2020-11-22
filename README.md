@@ -109,7 +109,7 @@ The library provides namespaced data attributes as styling anchors:
 
 - `data-a11y-footnotes-ref`: applied to every single footnote reference
 - `data-a11y-footnotes-footer`: applied to the footnotes wrapper
-- `data-a11y-footnotes-label`: applied to the footnotes title
+- `data-a11y-footnotes-title`: applied to the footnotes title
 - `data-a11y-footnotes-list`: applied to the footnotes list
 - `data-a11y-footnotes-list-item`: applied to every individual footnote
 - `data-a11y-footnotes-back-link`: applied to every individual back link

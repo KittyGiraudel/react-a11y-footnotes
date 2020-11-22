@@ -89,7 +89,7 @@ var Footnotes = function Footnotes(props) {
   return /*#__PURE__*/_react["default"].createElement(Wrapper, {
     "data-a11y-footnotes-footer": true
   }, /*#__PURE__*/_react["default"].createElement(Title, {
-    "data-a11y-footnotes-label": true,
+    "data-a11y-footnotes-title": true,
     id: footnotesTitleId
   }), /*#__PURE__*/_react["default"].createElement(List, {
     "data-a11y-footnotes-list": true

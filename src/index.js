@@ -56,7 +56,7 @@ export const Footnotes = props => {
 
   return (
     <Wrapper data-a11y-footnotes-footer>
-      <Title data-a11y-footnotes-label id={footnotesTitleId} />
+      <Title data-a11y-footnotes-title id={footnotesTitleId} />
       <List data-a11y-footnotes-list>
         {footnotes.map(({ idNote, idRef, description }) => (
           <ListItem id={idNote} key={idNote} data-a11y-footnotes-list-item>

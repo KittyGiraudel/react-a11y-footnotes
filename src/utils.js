@@ -13,4 +13,10 @@ export const getTextFromTree = tree => {
 }
 
 export const getIdFromTree = tree =>
-  getTextFromTree(tree).replace(/[^a-z-_]/g, '-')
+  getTextFromTree(tree)
+    .toLowerCase()
+    // Remove any character that is not a letter, a number, an hyphen or an
+    // underscore, regardless of casing
+    .replace(/[^a-z0-9-_\s]/g, '')
+    // Replace all spaces with hyphens
+    .replace(/\s+/g, '-')
