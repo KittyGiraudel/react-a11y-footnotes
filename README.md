@@ -219,6 +219,8 @@ If no `id` is passed to references (`<FootnoteRef>`)—which is usually the case
 
 ## Example
 
+Find a [complete demo on CodeSandbox](https://codesandbox.io/s/footnotes-v34hm).
+
 ```js
 import {
   FootnotesProvider,
