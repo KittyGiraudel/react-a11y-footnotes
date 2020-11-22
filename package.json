@@ -1,0 +1,43 @@
+{
+  "name": "react-a11y-footnotes",
+  "version": "0.1.0",
+  "description": "A reusable React implementation of accessible footnotes.",
+  "homepage": "https://github.com/HugoGiraudel/react-a11y-footnotes",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "keywords": [
+    "footnotes",
+    "footnote",
+    "accessibility",
+    "a11y",
+    "react",
+    "component"
+  ],
+  "author": "Hugo “Kitty” Giraudel (https://hugogiraudel.com)",
+  "files": [
+    "dist/index.js"
+  ],
+  "scripts": {
+    "prepare": "npm run build",
+    "start": "babel src/index.js -o dist/index.js -w",
+    "build": "babel src/index.js -o dist/index.js",
+    "test": "npm run peer && jest",
+    "peer": "npm info . peerDependencies --json  | command sed 's/[\\{\\},]//g ; s/: /@/g' | xargs npm i --no-save"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.7",
+    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-react": "^7.12.7",
+    "@testing-library/jest-dom": "^5.11.6",
+    "@testing-library/react": "^11.2.2",
+    "jest": "^26.6.3"
+  },
+  "peerDependencies": {
+    "prop-types": "^15.6.0",
+    "react": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HugoGiraudel/react-a11y-footnotes/"
+  }
+}
