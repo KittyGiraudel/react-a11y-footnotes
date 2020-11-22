@@ -7,7 +7,7 @@ const FootnotesContext = React.createContext({})
 export const FootnoteRef = props => {
   const { description } = props
   const {
-    footnotesLabelId,
+    footnotesTitleId,
     getFootnoteRefId,
     getFootnoteId,
     register,
@@ -33,7 +33,9 @@ export const FootnoteRef = props => {
       id={idRef}
       href={`#${idNote}`}
       className={props.className}
-      aria-describedby={footnotesLabelId}
+      style={props.style}
+      aria-describedby={footnotesTitleId}
+      data-a11y-footnotes-ref
     >
       {props.children}
     </a>
@@ -47,21 +49,23 @@ FootnoteRef.propTypes = {
 }
 
 export const Footnotes = props => {
-  const { footnotes, footnotesLabelId } = React.useContext(FootnotesContext)
+  const { footnotes, footnotesTitleId } = React.useContext(FootnotesContext)
+  const { Wrapper, Title, List, ListItem, BackLink } = props
 
   if (footnotes.length === 0) return null
 
   return (
-    <props.Wrapper>
-      <props.Title id={footnotesLabelId} />
-      <props.List>
+    <Wrapper data-a11y-footnotes-footer>
+      <Title data-a11y-footnotes-label id={footnotesTitleId} />
+      <List data-a11y-footnotes-list>
         {footnotes.map(({ idNote, idRef, description }) => (
-          <props.ListItem id={idNote} key={idNote}>
-            {description} <props.BackLink id={idRef} />
-          </props.ListItem>
+          <ListItem id={idNote} key={idNote} data-a11y-footnotes-list-item>
+            {description}{' '}
+            <BackLink data-a11y-footnotes-back-link href={'#' + idRef} />
+          </ListItem>
         ))}
-      </props.List>
-    </props.Wrapper>
+      </List>
+    </Wrapper>
   )
 }
 
@@ -71,39 +75,46 @@ Footnotes.defaultProps = {
   List: 'ol',
   ListItem: 'li',
   BackLink: props => (
-    <a href={'#' + props.id} aria-label='Back to content'>
+    <a {...props} aria-label='Back to content'>
       ↩
     </a>
   ),
 }
 
-export const FootnotesProvider = props => {
+export const FootnotesProvider = ({ children, footnotesTitleId }) => {
   const [footnotes, setFootnotes] = React.useState([])
   const addFootnote = React.useCallback(footnote => {
     setFootnotes(footnotes =>
       footnotes.filter(f => f.idRef !== footnote.idRef).concat(footnote)
     )
   }, [])
+  const getBaseId = React.useCallback(
+    ({ id, children }) => id || getIdFromTree(children),
+    []
+  )
   const getFootnoteRefId = React.useCallback(
-    props => (props.id || getIdFromTree(props.children)) + '-ref',
-    []
+    props => getBaseId(props) + '-ref',
+    [getBaseId]
   )
-  const getFootnoteId = React.useCallback(
-    props => (props.id || getIdFromTree(props.children)) + '-note',
-    []
-  )
+  const getFootnoteId = React.useCallback(props => getBaseId(props) + '-note', [
+    getBaseId,
+  ])
 
   return (
     <FootnotesContext.Provider
       value={{
         footnotes,
-        footnotesLabelId: props.footnotesLabelId || 'footnotes-label',
+        footnotesTitleId,
         getFootnoteRefId,
         getFootnoteId,
         register: addFootnote,
       }}
     >
-      {props.children}
+      {children}
     </FootnotesContext.Provider>
   )
+}
+
+FootnotesProvider.defaultProps = {
+  footnotesTitleId: 'footnotes-label',
 }

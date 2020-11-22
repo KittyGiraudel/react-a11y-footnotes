@@ -25,13 +25,15 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 var FootnotesContext = /*#__PURE__*/_react["default"].createContext({});
 
 var FootnoteRef = function FootnoteRef(props) {
   var description = props.description;
 
   var _React$useContext = _react["default"].useContext(FootnotesContext),
-      footnotesLabelId = _React$useContext.footnotesLabelId,
+      footnotesTitleId = _React$useContext.footnotesTitleId,
       getFootnoteRefId = _React$useContext.getFootnoteRefId,
       getFootnoteId = _React$useContext.getFootnoteId,
       register = _React$useContext.register;
@@ -60,7 +62,9 @@ var FootnoteRef = function FootnoteRef(props) {
     id: idRef,
     href: "#".concat(idNote),
     className: props.className,
-    "aria-describedby": footnotesLabelId
+    style: props.style,
+    "aria-describedby": footnotesTitleId,
+    "data-a11y-footnotes-ref": true
   }, props.children);
 };
 
@@ -74,20 +78,32 @@ FootnoteRef.propTypes = {
 var Footnotes = function Footnotes(props) {
   var _React$useContext2 = _react["default"].useContext(FootnotesContext),
       footnotes = _React$useContext2.footnotes,
-      footnotesLabelId = _React$useContext2.footnotesLabelId;
+      footnotesTitleId = _React$useContext2.footnotesTitleId;
 
+  var Wrapper = props.Wrapper,
+      Title = props.Title,
+      List = props.List,
+      ListItem = props.ListItem,
+      BackLink = props.BackLink;
   if (footnotes.length === 0) return null;
-  return /*#__PURE__*/_react["default"].createElement(props.Wrapper, null, /*#__PURE__*/_react["default"].createElement(props.Title, {
-    id: footnotesLabelId
-  }), /*#__PURE__*/_react["default"].createElement(props.List, null, footnotes.map(function (_ref) {
+  return /*#__PURE__*/_react["default"].createElement(Wrapper, {
+    "data-a11y-footnotes-footer": true
+  }, /*#__PURE__*/_react["default"].createElement(Title, {
+    "data-a11y-footnotes-label": true,
+    id: footnotesTitleId
+  }), /*#__PURE__*/_react["default"].createElement(List, {
+    "data-a11y-footnotes-list": true
+  }, footnotes.map(function (_ref) {
     var idNote = _ref.idNote,
         idRef = _ref.idRef,
         description = _ref.description;
-    return /*#__PURE__*/_react["default"].createElement(props.ListItem, {
+    return /*#__PURE__*/_react["default"].createElement(ListItem, {
       id: idNote,
-      key: idNote
-    }, description, " ", /*#__PURE__*/_react["default"].createElement(props.BackLink, {
-      id: idRef
+      key: idNote,
+      "data-a11y-footnotes-list-item": true
+    }, description, ' ', /*#__PURE__*/_react["default"].createElement(BackLink, {
+      "data-a11y-footnotes-back-link": true,
+      href: '#' + idRef
     }));
   })));
 };
@@ -101,14 +117,16 @@ Footnotes.defaultProps = {
   List: 'ol',
   ListItem: 'li',
   BackLink: function BackLink(props) {
-    return /*#__PURE__*/_react["default"].createElement("a", {
-      href: '#' + props.id,
+    return /*#__PURE__*/_react["default"].createElement("a", _extends({}, props, {
       "aria-label": "Back to content"
-    }, "\u21A9");
+    }), "\u21A9");
   }
 };
 
-var FootnotesProvider = function FootnotesProvider(props) {
+var FootnotesProvider = function FootnotesProvider(_ref2) {
+  var children = _ref2.children,
+      footnotesTitleId = _ref2.footnotesTitleId;
+
   var _React$useState = _react["default"].useState([]),
       _React$useState2 = _slicedToArray(_React$useState, 2),
       footnotes = _React$useState2[0],
@@ -122,23 +140,32 @@ var FootnotesProvider = function FootnotesProvider(props) {
     });
   }, []);
 
-  var getFootnoteRefId = _react["default"].useCallback(function (props) {
-    return (props.id || (0, _utils.getIdFromTree)(props.children)) + '-ref';
+  var getBaseId = _react["default"].useCallback(function (_ref3) {
+    var id = _ref3.id,
+        children = _ref3.children;
+    return id || (0, _utils.getIdFromTree)(children);
   }, []);
 
+  var getFootnoteRefId = _react["default"].useCallback(function (props) {
+    return getBaseId(props) + '-ref';
+  }, [getBaseId]);
+
   var getFootnoteId = _react["default"].useCallback(function (props) {
-    return (props.id || (0, _utils.getIdFromTree)(props.children)) + '-note';
-  }, []);
+    return getBaseId(props) + '-note';
+  }, [getBaseId]);
 
   return /*#__PURE__*/_react["default"].createElement(FootnotesContext.Provider, {
     value: {
       footnotes: footnotes,
-      footnotesLabelId: props.footnotesLabelId || 'footnotes-label',
+      footnotesTitleId: footnotesTitleId,
       getFootnoteRefId: getFootnoteRefId,
       getFootnoteId: getFootnoteId,
       register: addFootnote
     }
-  }, props.children);
+  }, children);
 };
 
 exports.FootnotesProvider = FootnotesProvider;
+FootnotesProvider.defaultProps = {
+  footnotesTitleId: 'footnotes-label'
+};
