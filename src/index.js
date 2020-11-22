@@ -56,7 +56,7 @@ export const Footnotes = props => {
   if (footnotes.length === 0) return null
 
   return (
-    <Wrapper data-a11y-footnotes-footer>
+    <Wrapper data-a11y-footnotes-footer role='doc-endnotes'>
       <Title data-a11y-footnotes-title id={footnotesTitleId} />
       <List data-a11y-footnotes-list>
         {footnotes.map(({ idNote, idRef, description }) => (

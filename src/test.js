@@ -87,6 +87,7 @@ describe('The `Footnotes` component', () => {
       </FootnotesProvider>
     )
 
+    screen.getByRole('doc-endnotes')
     screen.getByTestId('css-counters-note')
   })
 

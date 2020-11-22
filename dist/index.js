@@ -86,7 +86,8 @@ var Footnotes = function Footnotes(props) {
       BackLink = props.BackLink;
   if (footnotes.length === 0) return null;
   return /*#__PURE__*/_react["default"].createElement(Wrapper, {
-    "data-a11y-footnotes-footer": true
+    "data-a11y-footnotes-footer": true,
+    role: "doc-endnotes"
   }, /*#__PURE__*/_react["default"].createElement(Title, {
     "data-a11y-footnotes-title": true,
     id: footnotesTitleId

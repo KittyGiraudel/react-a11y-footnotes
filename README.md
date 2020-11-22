@@ -70,7 +70,7 @@ The `FootnoteRef` renders a link like this:
 The `Footnotes` component renders a HTML structure like this:
 
 ```html
-<footer>
+<footer role="doc-endnotes">
   <h2 id="footnotes-label">Footnotes</h2>
   <ol>
     <li id="css-counters-note">
