@@ -76,7 +76,7 @@ Footnotes.defaultProps = {
   List: 'ol',
   ListItem: 'li',
   BackLink: props => (
-    <a {...props} aria-label='Back to content'>
+    <a {...props} aria-label='Back to content' role='doc-backlink'>
       ↩
     </a>
   ),

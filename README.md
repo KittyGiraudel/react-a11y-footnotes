@@ -76,7 +76,12 @@ The `Footnotes` component renders a HTML structure like this:
     <li id="css-counters-note">
       CSS counters are, in essence, variables maintained by CSS whose values may
       be incremented by CSS rules to track how many times they’re used.
-      <a href="#css-counters-ref" aria-label="Back to content">↩</a>
+      <a
+        href="#css-counters-ref"
+        aria-label="Back to content"
+        role="doc-backlink"
+        >↩</a
+      >
     </li>
   </ol>
 </footer>
@@ -94,7 +99,7 @@ The `Footnotes` component renders a HTML structure like this:
 
 ```js
 const BackLink = props => (
-  <a href={'#' + props.id} aria-label='Back to content'>
+  <a href={'#' + props.id} aria-label='Back to content' role='doc-backlink'>
     ↩
   </a>
 )
