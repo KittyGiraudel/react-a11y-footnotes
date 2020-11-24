@@ -12,9 +12,12 @@ Find a [complete demo on CodeSandbox](https://codesandbox.io/s/footnotes-v34hm).
   - [`FootnoteRef`](#footnoteref)
   - [`Footnotes`](#footnotes)
 - [Styling](#styling)
-  - [With CSS](#with-css)
-  - [With CSS-in-JS](#with-css-in-js)
-  - [Suggestions](#suggestions)
+  - [Using base styles](#using-base-styles)
+    - [With a bundler](#with-a-bundler)
+    - [Without a bundler](#with-a-bundler)
+  - [Customisation](#customisation)
+    - [With CSS](#with-css)
+    - [With CSS-in-JS](#with-css-in-js)
 - [ID generation](#id-generation)
 - [Example](#example)
 
@@ -101,9 +104,43 @@ The `Footnotes` component renders a HTML structure like this:
 
 ## Styling
 
-Styling is left at the description of the author.
+Styling is left at the description of the author. That being said, some very basic styling are packaged with the library and can be used if deemed necessary.
 
-### With CSS
+### Using base styles
+
+#### With a bundler
+
+If you are using a module bundler like webpack or parcel, you can import them where you import the component.
+
+```js
+// Import the components
+import { FootnotesProvider, FootnoteRef, Footnotes } from 'react-a11y-footnotes'
+
+// And the styles
+import 'react-a11y-footnotes/dist/styles.css'
+```
+
+#### Without a bundler
+
+If you’re not using a bundler you can find the styles at:
+
+```
+your-app/node_modules/react-a11y-foonotes/dist/styles.css
+```
+
+Include this file however you include the rest of your stylesheets. Alternatively, you can use a CDN like Unpkg, but this is not recommended for production apps.
+
+```html
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://unpkg.com/react-a11y-footnotes@<version>/dist/styles.css"
+/>
+```
+
+### Overriding and customisation
+
+#### With CSS
 
 The library provides namespaced data attributes as styling anchors:
 
@@ -114,7 +151,7 @@ The library provides namespaced data attributes as styling anchors:
 - `data-a11y-footnotes-list-item`: applied to every individual footnote
 - `data-a11y-footnotes-back-link`: applied to every individual back link
 
-### With CSS-in-JS
+#### With CSS-in-JS
 
 Given every component rendered by the `Footnotes` component is customisable, and `FootnoteRef` accept both `style` and `className`, integration with CSS-in-JS libraries should be relatively seamless.
 
@@ -131,82 +168,6 @@ And with [styled-components](https://styled-components.com):
 const Ref = styled(FootnoteRef)`
   color: deeppink;
 `
-```
-
-### Suggestions
-
-Here is the styling boilerplate which can be started from. Find a [complete demo on CodeSandbox](https://codesandbox.io/s/footnotes-v34hm?file=/src/styles.css:134-1558) to see how it looks.
-
-```css
-/**
- * 1. Initialiazing a `footnotes` counter on the content wrapper.
- *    `body` can be used if there is only one such wrapper per page
- *    otherwise something more specific should be used.
- */
-body {
-  counter-reset: footnotes; /* 1 */
-}
-
-[data-a11y-footnotes-footer] {
-  /* Styles for the footnotes wrapper */
-}
-
-[data-a11y-footnotes-list] {
-  /* Styles for the footnotes list */
-}
-
-/**
- * 1. Highlight the targeted footnote
- */
-[data-a11y-footnotes-list-item]:target {
-  background-color: yellow; /* 1 */
-}
-
-/**
- * 1. Visually make the back links a little smaller
- */
-[data-a11y-footnotes-back-link] {
-  font-size: 80%; /* 1 */
-}
-
-/**
- * Inline footnotes references
- * 1. Increment the counter at each new reference
- * 2. Reset link styles to make it appear like regular text
- */
-[data-a11y-footnotes-ref] {
-  counter-increment: footnotes; /* 1 */
-  text-decoration: none; /* 2 */
-  color: inherit; /* 2 */
-  cursor: default; /* 2 */
-  outline: none; /* 2 */
-}
-
-/**
- * Actual numbered references
- * 1. Display the current state of the counter (e.g. `[1]`)
- * 2. Align text as superscript
- * 3. Make the number smaller (since it’s superscript)
- * 4. Slightly offset the number from the text
- * 5. Reset link styles on the number to show it's usable
- */
-[data-a11y-footnotes-ref]::after {
-  content: '[' counter(footnotes) ']'; /* 1 */
-  vertical-align: super; /* 2 */
-  font-size: 50%; /* 3 */
-  margin-left: 2px; /* 4 */
-  color: blue; /* 5 */
-  text-decoration: underline; /* 5 */
-  cursor: pointer; /* 5 */
-}
-
-/**
- * 1. Reseting the default focused styles on the number
- */
-[data-a11y-footnotes-ref]:focus::after {
-  outline: thin dotted; /* 1 */
-  outline-offset: 2px; /* 1 */
-}
 ```
 
 ## ID generation

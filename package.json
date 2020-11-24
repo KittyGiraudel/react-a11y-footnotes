@@ -15,7 +15,8 @@
   ],
   "author": "Hugo “Kitty” Giraudel (https://hugogiraudel.com)",
   "files": [
-    "dist/index.js"
+    "dist/index.js",
+    "dist/styles.css"
   ],
   "scripts": {
     "prepare": "npm run build",
