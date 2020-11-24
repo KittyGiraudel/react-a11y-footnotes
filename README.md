@@ -65,6 +65,8 @@ The `FootnoteRef` renders a link like this:
 - The `id` prop can be passed to handle `id` manually, otherwise it is automatically generated from the reference content.
 - The `style` and `className` props can be freely passed through in order to enable styling with CSS-in-JS libraries (see [Styling](#styling) section).
 
+As you can see, the footnote reference itself does not contain a number (e.g. `[1]`) on an asterisk (`*`). This is done in CSS with pseudo-elements. If CSS does not render, the links still work and the footnotes still make sense, no big deal.
+
 ### `Footnotes`
 
 The `Footnotes` component renders a HTML structure like this:
