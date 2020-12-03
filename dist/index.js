@@ -100,7 +100,8 @@ var Footnotes = function Footnotes(props) {
     return /*#__PURE__*/_react["default"].createElement(ListItem, {
       id: idNote,
       key: idNote,
-      "data-a11y-footnotes-list-item": true
+      "data-a11y-footnotes-list-item": true,
+      role: "doc-endnote"
     }, description, "\xA0", /*#__PURE__*/_react["default"].createElement(BackLink, {
       "data-a11y-footnotes-back-link": true,
       href: '#' + idRef,

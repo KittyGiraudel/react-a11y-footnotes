@@ -60,7 +60,12 @@ export const Footnotes = props => {
       <Title data-a11y-footnotes-title id={footnotesTitleId} />
       <List data-a11y-footnotes-list>
         {footnotes.map(({ idNote, idRef, description }) => (
-          <ListItem id={idNote} key={idNote} data-a11y-footnotes-list-item>
+          <ListItem
+            id={idNote}
+            key={idNote}
+            data-a11y-footnotes-list-item
+            role='doc-endnote'
+          >
             {description}&nbsp;
             <BackLink
               data-a11y-footnotes-back-link
