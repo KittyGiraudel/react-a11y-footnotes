@@ -83,7 +83,7 @@ The `Footnotes` component renders a HTML structure like this:
       be incremented by CSS rules to track how many times they’re used.
       <a
         href="#css-counters-ref"
-        aria-label="Back to content"
+        aria-label="Back to reference 1"
         role="doc-backlink"
         >↩</a
       >

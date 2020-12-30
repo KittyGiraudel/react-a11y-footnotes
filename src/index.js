@@ -59,7 +59,7 @@ export const Footnotes = props => {
     <Wrapper data-a11y-footnotes-footer role='doc-endnotes'>
       <Title data-a11y-footnotes-title id={footnotesTitleId} />
       <List data-a11y-footnotes-list>
-        {footnotes.map(({ idNote, idRef, description }) => (
+        {footnotes.map(({ idNote, idRef, description }, index) => (
           <ListItem
             id={idNote}
             key={idNote}
@@ -70,7 +70,7 @@ export const Footnotes = props => {
             <BackLink
               data-a11y-footnotes-back-link
               href={'#' + idRef}
-              aria-label='Back to content'
+              aria-label={`Back to reference ${index + 1}`}
               role='doc-backlink'
             />
           </ListItem>
