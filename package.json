@@ -2,7 +2,7 @@
   "name": "react-a11y-footnotes",
   "version": "0.3.0",
   "description": "A reusable React implementation of accessible footnotes.",
-  "homepage": "https://github.com/HugoGiraudel/react-a11y-footnotes",
+  "homepage": "https://github.com/KittyGiraudel/react-a11y-footnotes",
   "license": "MIT",
   "main": "dist/index.js",
   "keywords": [
@@ -13,7 +13,7 @@
     "react",
     "component"
   ],
-  "author": "Hugo “Kitty” Giraudel (https://hugogiraudel.com)",
+  "author": "Kitty Giraudel (https://kittygiraudel.com)",
   "files": [
     "dist/index.js",
     "dist/styles.css"
@@ -39,6 +39,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/HugoGiraudel/react-a11y-footnotes/"
+    "url": "https://github.com/KittyGiraudel/react-a11y-footnotes/"
   }
 }
