@@ -44,7 +44,7 @@ export const FootnoteRef = props => {
 }
 
 FootnoteRef.propTypes = {
-  description: PropTypes.string.isRequired,
+  description: PropTypes.node.isRequired,
   children: PropTypes.node.isRequired,
   id: PropTypes.string,
 }
