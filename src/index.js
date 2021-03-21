@@ -7,6 +7,7 @@ const FootnotesContext = React.createContext({})
 export const FootnoteRef = props => {
   const { description } = props
   const {
+    footnotes,
     footnotesTitleId,
     getFootnoteRefId,
     getFootnoteId,
@@ -26,7 +27,9 @@ export const FootnoteRef = props => {
     description,
   ])
 
-  React.useEffect(() => register(footnote), [register, footnote])
+  if (!footnotes.current.find(fn => fn.idRef === footnote.ref)) {
+    footnotes.current.push(footnote)
+  }
 
   return (
     <a
@@ -53,13 +56,13 @@ export const Footnotes = props => {
   const { footnotes, footnotesTitleId } = React.useContext(FootnotesContext)
   const { Wrapper, Title, List, ListItem, BackLink } = props
 
-  if (footnotes.length === 0) return null
+  if (footnotes.current.length === 0) return null
 
   return (
     <Wrapper data-a11y-footnotes-footer role='doc-endnotes'>
       <Title data-a11y-footnotes-title id={footnotesTitleId} />
       <List data-a11y-footnotes-list>
-        {footnotes.map(({ idNote, idRef, description }, index) => (
+        {footnotes.current.map(({ idNote, idRef, description }, index) => (
           <ListItem
             id={idNote}
             key={idNote}
@@ -89,12 +92,7 @@ Footnotes.defaultProps = {
 }
 
 export const FootnotesProvider = ({ children, footnotesTitleId }) => {
-  const [footnotes, setFootnotes] = React.useState([])
-  const addFootnote = React.useCallback(footnote => {
-    setFootnotes(footnotes =>
-      footnotes.filter(f => f.idRef !== footnote.idRef).concat(footnote)
-    )
-  }, [])
+  const footnotes = React.useRef([])
   const getBaseId = React.useCallback(
     ({ id, children }) => id || getIdFromTree(children),
     []
