@@ -69,7 +69,7 @@ var FootnoteRef = function FootnoteRef(props) {
 
 exports.FootnoteRef = FootnoteRef;
 FootnoteRef.propTypes = {
-  description: _propTypes["default"].string.isRequired,
+  description: _propTypes["default"].node.isRequired,
   children: _propTypes["default"].node.isRequired,
   id: _propTypes["default"].string
 };
@@ -93,7 +93,7 @@ var Footnotes = function Footnotes(props) {
     id: footnotesTitleId
   }), /*#__PURE__*/_react["default"].createElement(List, {
     "data-a11y-footnotes-list": true
-  }, footnotes.map(function (_ref) {
+  }, footnotes.map(function (_ref, index) {
     var idNote = _ref.idNote,
         idRef = _ref.idRef,
         description = _ref.description;
@@ -105,7 +105,7 @@ var Footnotes = function Footnotes(props) {
     }, description, "\xA0", /*#__PURE__*/_react["default"].createElement(BackLink, {
       "data-a11y-footnotes-back-link": true,
       href: '#' + idRef,
-      "aria-label": "Back to content",
+      "aria-label": "Back to reference ".concat(index + 1),
       role: "doc-backlink"
     }));
   })));
