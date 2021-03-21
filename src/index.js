@@ -11,7 +11,6 @@ export const FootnoteRef = props => {
     footnotesTitleId,
     getFootnoteRefId,
     getFootnoteId,
-    register,
   } = React.useContext(FootnotesContext)
   const idRef = React.useMemo(() => getFootnoteRefId(props), [
     getFootnoteRefId,
@@ -27,9 +26,7 @@ export const FootnoteRef = props => {
     description,
   ])
 
-  if (!footnotes.current.find(fn => fn.idRef === footnote.ref)) {
-    footnotes.current.push(footnote)
-  }
+  if (!footnotes.has(footnote.idRef)) footnotes.set(footnote.idRef, footnote)
 
   return (
     <a
@@ -56,13 +53,15 @@ export const Footnotes = props => {
   const { footnotes, footnotesTitleId } = React.useContext(FootnotesContext)
   const { Wrapper, Title, List, ListItem, BackLink } = props
 
-  if (footnotes.current.length === 0) return null
+  if (footnotes.size === 0) return null
+
+  const references = Array.from(footnotes.values())
 
   return (
     <Wrapper data-a11y-footnotes-footer role='doc-endnotes'>
       <Title data-a11y-footnotes-title id={footnotesTitleId} />
       <List data-a11y-footnotes-list>
-        {footnotes.current.map(({ idNote, idRef, description }, index) => (
+        {references.map(({ idNote, idRef, description }, index) => (
           <ListItem
             id={idNote}
             key={idNote}
@@ -92,7 +91,7 @@ Footnotes.defaultProps = {
 }
 
 export const FootnotesProvider = ({ children, footnotesTitleId }) => {
-  const footnotes = React.useRef([])
+  const footnotes = React.useRef(new Map())
   const getBaseId = React.useCallback(
     ({ id, children }) => id || getIdFromTree(children),
     []
@@ -108,11 +107,10 @@ export const FootnotesProvider = ({ children, footnotesTitleId }) => {
   return (
     <FootnotesContext.Provider
       value={{
-        footnotes,
+        footnotes: footnotes.current,
         footnotesTitleId,
         getFootnoteRefId,
         getFootnoteId,
-        register: addFootnote,
       }}
     >
       {children}
