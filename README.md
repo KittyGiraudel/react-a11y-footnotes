@@ -221,7 +221,7 @@ const YourComponent = props => {
         display the actual footnotes in the footer, it becomes extremely easy.
       </p>
 
-      <Footnotes label='Footnotes' backLabel='Back to content' />
+      <Footnotes />
     </FootnotesProvider>
   )
 }
