@@ -3,13 +3,12 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.getIdFromTree = getIdFromTree;
 exports.FootnotesProvider = exports.Footnotes = exports.FootnoteRef = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _utils = require("./utils");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -151,7 +150,7 @@ var FootnotesProvider = function FootnotesProvider(_ref2) {
   var getBaseId = _react["default"].useCallback(function (_ref3) {
     var id = _ref3.id,
         children = _ref3.children;
-    return id || (0, _utils.getIdFromTree)(children);
+    return id || getIdFromTree(children);
   }, []);
 
   var getFootnoteRefId = _react["default"].useCallback(function (props) {
@@ -201,3 +200,24 @@ exports.FootnotesProvider = FootnotesProvider;
 FootnotesProvider.defaultProps = {
   footnotesTitleId: 'footnotes-label'
 };
+
+function getTextFromTree(tree) {
+  var text = '';
+
+  if (typeof tree === 'string') {
+    text += tree;
+  } else if (Array.isArray(tree)) {
+    text += tree.map(getTextFromTree).join('');
+  } else if (tree.props.children) {
+    text += getTextFromTree(tree.props.children);
+  }
+
+  return text;
+}
+
+function getIdFromTree(tree) {
+  return getTextFromTree(tree).toLowerCase() // Remove any character that is not a letter, a number, an hyphen or an
+  // underscore, regardless of casing
+  .replace(/[^a-z0-9-_\s]/g, '') // Replace all spaces with hyphens
+  .replace(/\s+/g, '-');
+}
