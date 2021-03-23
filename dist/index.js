@@ -31,6 +31,7 @@ var FootnoteRef = function FootnoteRef(props) {
   var description = props.description;
 
   var _React$useContext = _react["default"].useContext(FootnotesContext),
+      footnotes = _React$useContext.footnotes,
       footnotesTitleId = _React$useContext.footnotesTitleId,
       getFootnoteRefId = _React$useContext.getFootnoteRefId,
       getFootnoteId = _React$useContext.getFootnoteId,
@@ -50,10 +51,23 @@ var FootnoteRef = function FootnoteRef(props) {
       idNote: idNote,
       description: description
     };
-  }, [idRef, idNote, description]);
+  }, [idRef, idNote, description]); // It is not possible to update the React state on the server, still the
+  // footnote references need to be registered so the footnotes can be rendered.
+  // In that case, we mutate the state directly so the footnotes work with SSR.
+
+
+  if (!footnotes.has(footnote.idRef)) {
+    footnotes.set(footnote.idRef, footnote);
+  } // Once the application mounts, the footnotes state has been emptied and we
+  // can properly register the current footnote in it, and unregister it if it
+  // was to unmount.
+
 
   _react["default"].useEffect(function () {
-    return register(footnote);
+    var unregister = register(footnote);
+    return function () {
+      return unregister();
+    };
   }, [register, footnote]);
 
   return /*#__PURE__*/_react["default"].createElement("a", {
@@ -84,7 +98,8 @@ var Footnotes = function Footnotes(props) {
       List = props.List,
       ListItem = props.ListItem,
       BackLink = props.BackLink;
-  if (footnotes.length === 0) return null;
+  if (footnotes.size === 0) return null;
+  var references = Array.from(footnotes.values());
   return /*#__PURE__*/_react["default"].createElement(Wrapper, {
     "data-a11y-footnotes-footer": true,
     role: "doc-endnotes"
@@ -93,7 +108,7 @@ var Footnotes = function Footnotes(props) {
     id: footnotesTitleId
   }), /*#__PURE__*/_react["default"].createElement(List, {
     "data-a11y-footnotes-list": true
-  }, footnotes.map(function (_ref, index) {
+  }, references.map(function (_ref, index) {
     var idNote = _ref.idNote,
         idRef = _ref.idRef,
         description = _ref.description;
@@ -128,18 +143,10 @@ var FootnotesProvider = function FootnotesProvider(_ref2) {
   var children = _ref2.children,
       footnotesTitleId = _ref2.footnotesTitleId;
 
-  var _React$useState = _react["default"].useState([]),
+  var _React$useState = _react["default"].useState(new Map()),
       _React$useState2 = _slicedToArray(_React$useState, 2),
       footnotes = _React$useState2[0],
       setFootnotes = _React$useState2[1];
-
-  var addFootnote = _react["default"].useCallback(function (footnote) {
-    setFootnotes(function (footnotes) {
-      return footnotes.filter(function (f) {
-        return f.idRef !== footnote.idRef;
-      }).concat(footnote);
-    });
-  }, []);
 
   var getBaseId = _react["default"].useCallback(function (_ref3) {
     var id = _ref3.id,
@@ -153,7 +160,31 @@ var FootnotesProvider = function FootnotesProvider(_ref2) {
 
   var getFootnoteId = _react["default"].useCallback(function (props) {
     return getBaseId(props) + '-note';
-  }, [getBaseId]);
+  }, [getBaseId]); // When JavaScript kicks in and the application mounts, reset the footnotes
+  // store which was mutated by every reference.
+
+
+  _react["default"].useEffect(function () {
+    return setFootnotes(new Map());
+  }, []);
+
+  var register = _react["default"].useCallback(function (footnote) {
+    setFootnotes(function (footnotes) {
+      var clone = new Map(footnotes);
+      if (!clone.has(footnote.idRef)) clone.set(footnote.ifRef, footnote);
+      return clone;
+    }); // Return a function which can be used to unregister the footnote. This
+    // makes it convenient to register a footnote reference on mount, and
+    // unregister it on unmount.
+
+    return function () {
+      setFootnotes(function (footnotes) {
+        var clone = new Map(footnotes);
+        clone["delete"](footnote.idRef);
+        return clone;
+      });
+    };
+  }, []);
 
   return /*#__PURE__*/_react["default"].createElement(FootnotesContext.Provider, {
     value: {
@@ -161,7 +192,7 @@ var FootnotesProvider = function FootnotesProvider(_ref2) {
       footnotesTitleId: footnotesTitleId,
       getFootnoteRefId: getFootnoteRefId,
       getFootnoteId: getFootnoteId,
-      register: addFootnote
+      register: register
     }
   }, children);
 };

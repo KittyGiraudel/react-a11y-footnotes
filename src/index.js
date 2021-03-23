@@ -7,6 +7,7 @@ const FootnotesContext = React.createContext({})
 export const FootnoteRef = props => {
   const { description } = props
   const {
+    footnotes,
     footnotesTitleId,
     getFootnoteRefId,
     getFootnoteId,
@@ -26,7 +27,21 @@ export const FootnoteRef = props => {
     description,
   ])
 
-  React.useEffect(() => register(footnote), [register, footnote])
+  // It is not possible to update the React state on the server, still the
+  // footnote references need to be registered so the footnotes can be rendered.
+  // In that case, we mutate the state directly so the footnotes work with SSR.
+  if (!footnotes.has(footnote.idRef)) {
+    footnotes.set(footnote.idRef, footnote)
+  }
+
+  // Once the application mounts, the footnotes state has been emptied and we
+  // can properly register the current footnote in it, and unregister it if it
+  // was to unmount.
+  React.useEffect(() => {
+    const unregister = register(footnote)
+
+    return () => unregister()
+  }, [register, footnote])
 
   return (
     <a
@@ -53,13 +68,15 @@ export const Footnotes = props => {
   const { footnotes, footnotesTitleId } = React.useContext(FootnotesContext)
   const { Wrapper, Title, List, ListItem, BackLink } = props
 
-  if (footnotes.length === 0) return null
+  if (footnotes.size === 0) return null
+
+  const references = Array.from(footnotes.values())
 
   return (
     <Wrapper data-a11y-footnotes-footer role='doc-endnotes'>
       <Title data-a11y-footnotes-title id={footnotesTitleId} />
       <List data-a11y-footnotes-list>
-        {footnotes.map(({ idNote, idRef, description }, index) => (
+        {references.map(({ idNote, idRef, description }, index) => (
           <ListItem
             id={idNote}
             key={idNote}
@@ -89,12 +106,7 @@ Footnotes.defaultProps = {
 }
 
 export const FootnotesProvider = ({ children, footnotesTitleId }) => {
-  const [footnotes, setFootnotes] = React.useState([])
-  const addFootnote = React.useCallback(footnote => {
-    setFootnotes(footnotes =>
-      footnotes.filter(f => f.idRef !== footnote.idRef).concat(footnote)
-    )
-  }, [])
+  const [footnotes, setFootnotes] = React.useState(new Map())
   const getBaseId = React.useCallback(
     ({ id, children }) => id || getIdFromTree(children),
     []
@@ -107,6 +119,29 @@ export const FootnotesProvider = ({ children, footnotesTitleId }) => {
     getBaseId,
   ])
 
+  // When JavaScript kicks in and the application mounts, reset the footnotes
+  // store which was mutated by every reference.
+  React.useEffect(() => setFootnotes(new Map()), [])
+
+  const register = React.useCallback(footnote => {
+    setFootnotes(footnotes => {
+      const clone = new Map(footnotes)
+      if (!clone.has(footnote.idRef)) clone.set(footnote.ifRef, footnote)
+      return clone
+    })
+
+    // Return a function which can be used to unregister the footnote. This
+    // makes it convenient to register a footnote reference on mount, and
+    // unregister it on unmount.
+    return () => {
+      setFootnotes(footnotes => {
+        const clone = new Map(footnotes)
+        clone.delete(footnote.idRef)
+        return clone
+      })
+    }
+  }, [])
+
   return (
     <FootnotesContext.Provider
       value={{
@@ -114,7 +149,7 @@ export const FootnotesProvider = ({ children, footnotesTitleId }) => {
         footnotesTitleId,
         getFootnoteRefId,
         getFootnoteId,
-        register: addFootnote,
+        register,
       }}
     >
       {children}
