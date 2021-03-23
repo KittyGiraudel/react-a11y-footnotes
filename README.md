@@ -2,7 +2,7 @@
 
 react-a11y-dialog is a thin React component to ease the use of accessible footnotes in React applications. This implementation is heavily inspired by [Accessible footnotes with CSS](https://www.sitepoint.com/accessible-footnotes-css/).
 
-Find a [complete demo on CodeSandbox](https://codesandbox.io/s/footnotes-v34hm).
+Find a [complete demo on CodeSandbox](https://codesandbox.io/s/footnotes-forked-pq135).
 
 - [Install](#install)
 - [Terminology](#terminology)
