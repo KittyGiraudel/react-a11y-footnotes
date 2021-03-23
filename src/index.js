@@ -11,6 +11,7 @@ export const FootnoteRef = props => {
     footnotesTitleId,
     getFootnoteRefId,
     getFootnoteId,
+    register,
   } = React.useContext(FootnotesContext)
   const idRef = React.useMemo(() => getFootnoteRefId(props), [
     getFootnoteRefId,
@@ -26,7 +27,21 @@ export const FootnoteRef = props => {
     description,
   ])
 
-  if (!footnotes.has(footnote.idRef)) footnotes.set(footnote.idRef, footnote)
+  // It is not possible to update the React state on the server, still the
+  // footnote references need to be registered so the footnotes can be rendered.
+  // In that case, we mutate the state directly so the footnotes work with SSR.
+  if (!footnotes.has(footnote.idRef)) {
+    footnotes.set(footnote.idRef, footnote)
+  }
+
+  // Once the application mounts, the footnotes state has been emptied and we
+  // can properly register the current footnote in it, and unregister it if it
+  // was to unmount.
+  React.useEffect(() => {
+    const unregister = register(footnote)
+
+    return () => unregister()
+  }, [register, footnote])
 
   return (
     <a
@@ -91,7 +106,7 @@ Footnotes.defaultProps = {
 }
 
 export const FootnotesProvider = ({ children, footnotesTitleId }) => {
-  const footnotes = React.useRef(new Map())
+  const [footnotes, setFootnotes] = React.useState(new Map())
   const getBaseId = React.useCallback(
     ({ id, children }) => id || getIdFromTree(children),
     []
@@ -104,13 +119,37 @@ export const FootnotesProvider = ({ children, footnotesTitleId }) => {
     getBaseId,
   ])
 
+  // When JavaScript kicks in and the application mounts, reset the footnotes
+  // store which was mutated by every reference.
+  React.useEffect(() => setFootnotes(new Map()), [])
+
+  const register = React.useCallback(footnote => {
+    setFootnotes(footnotes => {
+      const clone = new Map(footnotes)
+      if (!clone.has(footnote.idRef)) clone.set(footnote.ifRef, footnote)
+      return clone
+    })
+
+    // Return a function which can be used to unregister the footnote. This
+    // makes it convenient to register a footnote reference on mount, and
+    // unregister it on unmount.
+    return () => {
+      setFootnotes(footnotes => {
+        const clone = new Map(footnotes)
+        clone.delete(footnote.idRef)
+        return clone
+      })
+    }
+  }, [])
+
   return (
     <FootnotesContext.Provider
       value={{
-        footnotes: footnotes.current,
+        footnotes,
         footnotesTitleId,
         getFootnoteRefId,
         getFootnoteId,
+        register,
       }}
     >
       {children}
