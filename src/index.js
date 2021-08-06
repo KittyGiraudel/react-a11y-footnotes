@@ -125,7 +125,7 @@ export const FootnotesProvider = ({ children, footnotesTitleId }) => {
   const register = React.useCallback(footnote => {
     setFootnotes(footnotes => {
       const clone = new Map(footnotes)
-      if (!clone.has(footnote.idRef)) clone.set(footnote.ifRef, footnote)
+      if (!clone.has(footnote.idRef)) clone.set(footnote.idRef, footnote)
       return clone
     })
 
