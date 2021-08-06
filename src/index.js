@@ -12,19 +12,18 @@ export const FootnoteRef = props => {
     getFootnoteId,
     register,
   } = React.useContext(FootnotesContext)
-  const idRef = React.useMemo(() => getFootnoteRefId(props), [
-    getFootnoteRefId,
-    props,
-  ])
-  const idNote = React.useMemo(() => getFootnoteId(props), [
-    getFootnoteId,
-    props,
-  ])
-  const footnote = React.useMemo(() => ({ idRef, idNote, description }), [
-    idRef,
-    idNote,
-    description,
-  ])
+  const idRef = React.useMemo(
+    () => getFootnoteRefId(props),
+    [getFootnoteRefId, props]
+  )
+  const idNote = React.useMemo(
+    () => getFootnoteId(props),
+    [getFootnoteId, props]
+  )
+  const footnote = React.useMemo(
+    () => ({ idRef, idNote, description }),
+    [idRef, idNote, description]
+  )
 
   // It is not possible to update the React state on the server, still the
   // footnote references need to be registered so the footnotes can be rendered.
@@ -114,9 +113,10 @@ export const FootnotesProvider = ({ children, footnotesTitleId }) => {
     props => getBaseId(props) + '-ref',
     [getBaseId]
   )
-  const getFootnoteId = React.useCallback(props => getBaseId(props) + '-note', [
-    getBaseId,
-  ])
+  const getFootnoteId = React.useCallback(
+    props => getBaseId(props) + '-note',
+    [getBaseId]
+  )
 
   // When JavaScript kicks in and the application mounts, reset the footnotes
   // store which was mutated by every reference.
