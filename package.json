@@ -1,6 +1,6 @@
 {
   "name": "react-a11y-footnotes",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "A reusable React implementation of accessible footnotes.",
   "homepage": "https://github.com/KittyGiraudel/react-a11y-footnotes",
   "license": "MIT",

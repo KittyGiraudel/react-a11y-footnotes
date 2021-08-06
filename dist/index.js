@@ -170,7 +170,7 @@ var FootnotesProvider = function FootnotesProvider(_ref2) {
   var register = _react["default"].useCallback(function (footnote) {
     setFootnotes(function (footnotes) {
       var clone = new Map(footnotes);
-      if (!clone.has(footnote.idRef)) clone.set(footnote.ifRef, footnote);
+      if (!clone.has(footnote.idRef)) clone.set(footnote.idRef, footnote);
       return clone;
     }); // Return a function which can be used to unregister the footnote. This
     // makes it convenient to register a footnote reference on mount, and
