@@ -18,6 +18,7 @@
     "dist/index.js",
     "dist/styles.css"
   ],
+  "types": "dist/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
     "start": "babel src/index.js -o dist/index.js -w",
