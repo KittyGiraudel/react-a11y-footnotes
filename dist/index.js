@@ -3,8 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getIdFromTree = getIdFromTree;
 exports.FootnotesProvider = exports.Footnotes = exports.FootnoteRef = void 0;
+exports.getIdFromTree = getIdFromTree;
 
 var _react = _interopRequireDefault(require("react"));
 
