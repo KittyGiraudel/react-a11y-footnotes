@@ -16,7 +16,8 @@
   "author": "Kitty Giraudel (https://kittygiraudel.com)",
   "files": [
     "dist/index.js",
-    "dist/styles.css"
+    "dist/styles.css",
+    "dist/index.d.ts"
   ],
   "types": "dist/index.d.ts",
   "scripts": {
