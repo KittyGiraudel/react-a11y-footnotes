@@ -125,7 +125,7 @@ import 'react-a11y-footnotes/dist/styles.css'
 If you’re not using a bundler you can find the styles at:
 
 ```
-your-app/node_modules/react-a11y-foonotes/dist/styles.css
+your-app/node_modules/react-a11y-footnotes/dist/styles.css
 ```
 
 Include this file however you include the rest of your stylesheets. Alternatively, you can use a CDN like Unpkg, but this is not recommended for production apps.
