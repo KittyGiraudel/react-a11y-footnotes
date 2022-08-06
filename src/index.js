@@ -79,7 +79,6 @@ export const Footnotes = props => {
             id={idNote}
             key={idNote}
             data-a11y-footnotes-list-item
-            role='doc-endnote'
           >
             {description}&nbsp;
             <BackLink
