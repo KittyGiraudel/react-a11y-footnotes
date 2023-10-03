@@ -1,7 +1,7 @@
 import React from 'react'
 import { Footnotes, FootnotesProvider, FootnoteRef, getIdFromTree } from './'
 import { render, configure, screen } from '@testing-library/react'
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom'
 
 configure({ testIdAttribute: 'id' })
 
