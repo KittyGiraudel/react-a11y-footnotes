@@ -62,9 +62,14 @@ FootnoteRef.propTypes = {
   id: PropTypes.string,
 }
 
-export const Footnotes = props => {
+export const Footnotes = ({
+  Wrapper = 'footer',
+  Title = props => <h2 {...props}>Footnotes</h2>,
+  List = 'ol',
+  ListItem = 'li',
+  BackLink = props => <a {...props}>↩</a>,
+}) => {
   const { footnotes, footnotesTitleId } = React.useContext(FootnotesContext)
-  const { Wrapper, Title, List, ListItem, BackLink } = props
 
   if (footnotes.size === 0) return null
 
@@ -75,11 +80,7 @@ export const Footnotes = props => {
       <Title data-a11y-footnotes-title id={footnotesTitleId} />
       <List data-a11y-footnotes-list>
         {references.map(({ idNote, idRef, description }, index) => (
-          <ListItem
-            id={idNote}
-            key={idNote}
-            data-a11y-footnotes-list-item
-          >
+          <ListItem id={idNote} key={idNote} data-a11y-footnotes-list-item>
             {description}&nbsp;
             <BackLink
               data-a11y-footnotes-back-link
@@ -94,15 +95,10 @@ export const Footnotes = props => {
   )
 }
 
-Footnotes.defaultProps = {
-  Wrapper: 'footer',
-  Title: props => <h2 {...props}>Footnotes</h2>,
-  List: 'ol',
-  ListItem: 'li',
-  BackLink: props => <a {...props}>↩</a>,
-}
-
-export const FootnotesProvider = ({ children, footnotesTitleId }) => {
+export const FootnotesProvider = ({
+  children,
+  footnotesTitleId = 'footnotes-label',
+}) => {
   const [footnotes, setFootnotes] = React.useState(new Map())
   const getBaseId = React.useCallback(
     ({ id, children }) => id || getIdFromTree(children),
@@ -153,10 +149,6 @@ export const FootnotesProvider = ({ children, footnotesTitleId }) => {
       {children}
     </FootnotesContext.Provider>
   )
-}
-
-FootnotesProvider.defaultProps = {
-  footnotesTitleId: 'footnotes-label',
 }
 
 function getTextFromTree(tree) {
